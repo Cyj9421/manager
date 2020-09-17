@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 class ManagerApplicationTests {
@@ -20,7 +22,7 @@ class ManagerApplicationTests {
     }
     @Test
     void addUser(){
-        User user=new User(1,"cyj",1,"9421","1.jpg","2.jpg","643379347@qq.com","略略略",0,0);
+        User user=new User(1,"cyj",1,"9421","1.jpg","2.jpg","643379347@qq.com","略略略",new Date(),0);
         int result=userDao.addUser(user);
         System.out.println(result);
     }

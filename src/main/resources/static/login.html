@@ -79,11 +79,12 @@
 
                 <div id="validatePanel" class="item" style="width: 137px;">
                     <input type="text" name="captcha" placeholder="请输入验证码" maxlength="4">
-                    <img id="refreshCaptcha" class="validateImg"  src="images/captcha.jpg" >
+                    <img id="code"  src="verify/code.action" class="validateImg"><br>
                 </div>
-
+                <a href="javascript:" id="refresh">看不清，换一张</a>
             </div>
             <div class="tip">
+
                 <span class="login-tip"><a href="/register.html" class="register">没有账号？点击注册</a></span>&nbsp;&nbsp;
                 <a href="javascript:" class="forget-password">忘记密码？</a>
 
@@ -124,8 +125,13 @@
                 $(this).addClass('icon-check');
             }
         });
+        // 刷新验证码
+        $("#refresh").unbind("click").bind("click", function(){
+            $("#code").attr("src", "verify/code.action?r=" + Math.random());
+        });
 
-        // 进行登录操作
+
+            // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
             if (data.username == '') {
@@ -135,17 +141,33 @@
             if (data.password == '') {
                 layer.msg('密码不能为空');
                 return false;
+            }else {
+                var code = $("input[name=captcha]").val();
+                var flag = true;
+                if (code == "") {
+                    layer.msg("验证码不能为空！");
+                    return false;
+                } else {
+                    $.ajax({
+                        url: "verify/checkVerifyCode.action",
+                        type: "post",
+                        data: {"captcha": code},
+                        dataType: "text",
+                        async: false,
+                        success: function (result) {
+                            if (result == "false") {
+                                layer.msg("验证码输入不正确!");
+                                flag = false;
+                            }
+                        }
+                    });
+
+                    return flag;
+                }
             }
-            if (data.captcha == '') {
-                layer.msg('验证码不能为空');
-                return false;
-            }
-            layer.msg('登录成功', function () {
-                window.location = '/index.html';
             });
-            return false;
-        });
     });
+
 </script>
 </body>
 </html>

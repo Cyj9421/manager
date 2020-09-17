@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @RestController
 public class UserController {
     ModelAndView modelAndView = new ModelAndView();
@@ -20,6 +21,7 @@ public class UserController {
     @ResponseBody
     public ModelAndView login(String username, String password) {
         User user = userService.login(username, password);
+        modelAndView.clear();
         if (user != null) {
             modelAndView.setViewName("index");
             return modelAndView;
@@ -32,14 +34,24 @@ public class UserController {
     //注册用户
     @RequestMapping("/user/register")
     @ResponseBody
-    public String addUser(@RequestBody User user) {
-        userService.addUser(user);
-        return "login";
+    public ModelAndView addUser(@RequestBody User user) {
+        modelAndView.clear();
+        int result=userService.addUser(user);
+            if(result>0) {
+                System.out.println("2");
+                modelAndView.setViewName("login");
+                return modelAndView;
+            }else {
+                System.out.println("3");
+                modelAndView.setViewName("register");
+                return modelAndView;
+            }
     }
 
-    @RequestMapping("/user/test")
+    @RequestMapping("/test")//进入登录界面
     @ResponseBody
     public ModelAndView test() {
+        modelAndView.clear();
         modelAndView.setViewName("login");
         return modelAndView;
 

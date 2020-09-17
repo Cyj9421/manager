@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +30,6 @@ public class User {
     private String avatar_small;//小头像
     private String email;//邮箱
     private String name;//昵称
-    private int reg_time;//注册时间
+    private Date reg_time;//注册时间
     private int last_login_time;//最后一次登录时间
 }
